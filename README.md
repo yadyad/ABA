@@ -1,2 +1,0 @@
-# ABA
-Furhat robot experiment
