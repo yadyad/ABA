@@ -61,7 +61,7 @@ class AnswerOption : EnumEntity {
     }
 
     override fun getEnumItems(lang: Language): List<EnumItem> {
-        return QuestionSet.current.options;
+        return QuestionSet.current.options
     }
 
 }
@@ -86,3 +86,15 @@ class Decease : Intent() {
         )
     }
 }
+
+class Contact : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+            "emergency",
+            "My emergency contact is Sadie, and her number is +49 1482929548.",
+            "contact",
+            "number"
+        )
+    }
+}
+
