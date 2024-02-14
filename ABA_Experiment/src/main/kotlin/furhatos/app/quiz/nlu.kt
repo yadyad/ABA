@@ -98,3 +98,23 @@ class Contact : Intent() {
     }
 }
 
+
+class PainLevel : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+            "current",
+            "My current pain level is 5",
+            "level"
+        )
+    }
+}
+
+class Allergies : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+            "known",
+            "I don't have any known allergies.",
+            "allergies"
+        )
+    }
+}

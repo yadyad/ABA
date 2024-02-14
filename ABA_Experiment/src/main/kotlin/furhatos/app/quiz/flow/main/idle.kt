@@ -1,7 +1,7 @@
 package furhatos.app.quiz.flow.main
 
 import furhatos.app.quiz.flow.Parent
-import furhatos.app.quiz.flow.state1
+import furhatos.app.quiz.flow.intro
 import furhatos.app.quiz.setting.interested
 import furhatos.app.quiz.setting.playing
 import furhatos.app.quiz.setting.quiz
@@ -22,7 +22,7 @@ val Idle: State = state {
         users.interested().forEach {
             furhat.attend(it)
             //goto(QueryPerson(it))
-            goto(state1)
+            goto(intro)
         }
         // Once no more user, start the game with all interested users
         if (users.playing().isNotEmpty()) {
@@ -40,7 +40,7 @@ val Idle: State = state {
             furhat.attend(it.id)
             furhat.say("Hello there")
             //goto(QueryPerson(it))
-            goto(state1)
+            goto(intro)
         } else {
             furhat.glance(it.id, async=true)
         }
