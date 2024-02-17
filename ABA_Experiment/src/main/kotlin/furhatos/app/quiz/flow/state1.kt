@@ -1,17 +1,21 @@
 package furhatos.app.quiz.flow
 
+import furhatos.app.attentiongrabber.gestures.MySmile
+import furhatos.app.attentiongrabber.gestures.TripleBlink
 import furhatos.app.quiz.*
 import furhatos.flow.kotlin.State
 import furhatos.flow.kotlin.furhat
 import furhatos.flow.kotlin.onResponse
 import furhatos.flow.kotlin.state
+import furhatos.gestures.Gesture
+import furhatos.gestures.Gestures
 import furhatos.nlu.common.PersonName
 
 var userName = ""
 val intro: State = state(parent = Parent) {
     onEntry {
-        print("hello")
-        furhat.ask("I’m Furhat, your virtual healthcare assistant. What is your emergency?")
+        furhat.ask("I’m your virtual healthcare assistant. What is your emergency?")
+
     }
 
     onResponse<Decease> {
@@ -21,19 +25,30 @@ val intro: State = state(parent = Parent) {
 
 val requestName: State = state(parent = Parent) {
     onEntry {
-        furhat.ask("The doctor will be here shortly. I require your details. I ensure that I will maintain the" +
-                " confidentiality and security of your personal information. What is your name?")
+        furhat.ask("Acknowledged. The doctor will arrive shortly. I require your details to proceed. I assure you of " +
+                "the confidentiality and security of your personal information. What is your name?")
     }
 
     onResponse<PersonName> {
-        userName += it.intent.value
         goto(requestInformation)
     }
 }
 
 val requestInformation: State = state(parent = Parent) {
     onEntry {
-        furhat.ask( userName + "Place your insurance card on the side table to your left for us to collect your information.")
+        furhat.ask( "Place your insurance card on the side table to your left for us to collect your information.")
+
+    }
+
+    onResponse<Insurance> {
+        goto(processedInsurance)
+    }
+}
+
+val processedInsurance : State = state(parent = Parent ) {
+    onEntry {
+        furhat.ask( "Your insurance details have been processed.")
+
     }
 
     onResponse<Nervous> {
@@ -43,18 +58,17 @@ val requestInformation: State = state(parent = Parent) {
 
 val requestContact: State = state(parent = Parent) {
     onEntry {
-        furhat.ask("We will establish contact with your loved ones so that they can comfort you. Give us the name and phone number of your emergency contact.")
+        furhat.ask("Provide the name and phone number of your emergency contact, we will contact them.")
     }
 
     onResponse<Contact> {
         goto(requestPainLevel)
-       // furhat.say("Thank you. The doctor will be with you shortly. I am here to assist you.")
     }
 }
 
 val requestPainLevel: State = state(parent = Parent)  {
     onEntry {
-        furhat.ask("On a scale of 1 to 10, with 10 representing the most discomfort and 1 indicating the least , please provide your current level of pain")
+        furhat.ask("On a scale of 1 to 10, with 10 representing the most discomfort and 1 indicating the least, provide your current level of pain")
     }
     onResponse<PainLevel> {
         goto(requestAllergies)
@@ -63,11 +77,12 @@ val requestPainLevel: State = state(parent = Parent)  {
 
 val requestAllergies:State = state(parent = Parent){
     onEntry {
-        furhat.ask("Could you please share any allergies or medical conditions you have?")
+        furhat.ask("Share any allergies or medical conditions you have.")
     }
 
     onResponse<Allergies> {
-        furhat.say("Thank you. The doctor will be with you shortly. I am here to assist you.")
+        furhat.say("Acknowledged. The doctor will be with you shortly.")
+        furhat.gesture(Gestures.CloseEyes(duration = 4.0))
     }
 }
 
